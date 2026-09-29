@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestor de Tareas</title>
+    <style>
+        /* Estilos generales del fondo y fuente */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        /* Contenedor principal tipo tarjeta (centra y alinea todo) */
+        .contenedor {
+            max-width: 600px; 
+            margin: 40px auto; 
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 { color: #2c3e50; margin-top: 0; }
+        
+        /* Estilos de la lista */
+        ul { list-style-type: none; padding: 0; }
+        li { 
+            background: #f8f9fa; 
+            margin-bottom: 10px; 
+            padding: 15px; 
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between; /* Separa el texto del botón */
+            align-items: center;
+            border: 1px solid #e9ecef;
+        }
+        
+        .completada { text-decoration: line-through; color: #adb5bd; }
+        
+        /* Estilos de los enlaces/botones */
+        a { text-decoration: none; color: #198754; font-weight: bold; font-size: 0.9em; }
+        a:hover { color: #146c43; }
+        
+        /* Estilos del formulario alineado */
+        .formulario { display: flex; gap: 10px; margin-top: 15px; }
+        input[type="text"] {
+            flex-grow: 1; /* Hace que el input tome el espacio disponible */
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover { background-color: #0b5ed7; }
+        
+        hr { border: 0; height: 1px; background: #e9ecef; margin: 30px 0; }
+    </style>
+</head>
+<body>
+    <div class="contenedor">
+        <h1>📋 Mis Tareas</h1>
+        
+        <ul>
+            {% for tarea in tareas %}
+                <li>
+                    {% if tarea.hecho %}
+                        <span class="completada">{{ tarea.texto }}</span>
+                        <!-- Opcional: mostrar un check estático si ya está hecha -->
+                        <span style="color: #adb5bd;">✔️</span> 
+                    {% else %}
+                        <span>{{ tarea.texto }}</span>
+                        <a href="{{ url_for('completar', id=tarea.id) }}">✅ Completar</a>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+        
+        <hr>
+        
+        <h3>Agregar nueva tarea</h3>
+        <form action="{{ url_for('agregar') }}" method="POST" class="formulario">
+            <input type="text" name="texto_tarea" placeholder="¿Qué necesitas hacer hoy?" required>
+            <button type="submit">Agregar</button>
+        </form>
+    </div>
+</body>
+</html>
+ 
